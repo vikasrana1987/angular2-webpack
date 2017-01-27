@@ -1,0 +1,5 @@
+<div class="wrapper">
+    <my-header *ngIf="auth.loggedIn()"></my-header>
+    <my-sidebar *ngIf="auth.loggedIn()"></my-sidebar>
+    <router-outlet></router-outlet>
+</div>

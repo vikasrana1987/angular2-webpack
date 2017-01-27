@@ -1,0 +1,63 @@
+<div class="register-box">
+    <div class="register-logo">
+        <a href="javascript:"><b>Admin</b>LTE</a>
+    </div>
+    <div class="register-box-body">
+        <p class="login-box-msg">Register a new membership</p>
+        <my-alert></my-alert>
+        <form #form="ngForm" (ngSubmit)="onSubmit(form.valid)" novalidate>
+            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : firstName.hasError('required') && submitted}">
+                <input type="text" class="form-control" placeholder="First Name" name="firstName" [(ngModel)]="model.firstName" required #firstName="ngModel">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span *ngIf="firstName.hasError('required') && submitted" class="help-block">This field is required.</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': lastName.hasError('required') && submitted}">
+                <input type="text" class="form-control" placeholder="Last Name" name="lastName" [(ngModel)]="model.lastName" required #lastName="ngModel">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span *ngIf="lastName.hasError('required') && submitted" class="help-block">This field is required.</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': (email.hasError('required') || email.hasError('email')) && submitted}">
+                <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="model.email" required email #email="ngModel">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <span *ngIf="email.hasError('required') && submitted" class="help-block">This field is required.</span>
+                <span *ngIf="email.hasError('email') && submitted" class="help-block">Please enter valid email address.</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': (password.hasError('required') || password.hasError('minlength')) && submitted}">
+                <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="model.password" required #password="ngModel" minlength="6">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <span *ngIf="password.hasError('required') && submitted" class="help-block">This field is required.</span>
+                <span *ngIf="password.hasError('minlength') && submitted" class="help-block">Password must be at least 6 characters.</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': (confirmPassword.hasError('required') || confirmPassword.hasError('equalTo')) && submitted}">
+                <input type="password" class="form-control" placeholder="Confirm Password" name="confirmPassword" ngModel required #confirmPassword="ngModel" [equalTo]="password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <span *ngIf="confirmPassword.hasError('required') && submitted" class="help-block">This field is required.</span>
+                <span *ngIf="confirmPassword.hasError('equalTo') && submitted" class="help-block">Password and Confirm Password must be same.</span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck" [ngClass]="{'has-error': agree.hasError('required') && submitted}">
+                        <label>
+						<input type="checkbox" name="agree" ngModel required #agree="ngModel"> I agree to the <a href="#">terms</a>
+						</label>
+                        <span *ngIf="agree.hasError('required') && submitted" class="help-block">This field is required.</span>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <!--<div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
+			Facebook</a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
+			Google+</a>
+        </div>-->
+        <a [routerLink]="['/login']" class="text-center">I already have a membership</a>
+    </div>
+    <!-- /.form-box -->
+</div>

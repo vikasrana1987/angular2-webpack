@@ -1,0 +1,61 @@
+<div class="register-box">
+    <div class="register-logo">
+        <a href="javascript:"><b>Admin</b>LTE</a>
+    </div>
+    <div class="register-box-body">
+        <p class="login-box-msg">Register a new membership</p>
+        <form #form="ngForm" (ngSubmit)="registerForm(form.value)" novalidate>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': firstName?.errors?.required && (!form.controls.firstName.valid && !form.controls.firstName.pristine)}">
+                <input type="text" class="form-control" placeholder="First Name" name="firstName" ngModel required #firstName="ngModel">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span *ngIf="firstName?.errors?.required && (!form.controls.firstName.valid && !form.controls.firstName.pristine)" class="help-block">This field is required</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': lastName?.errors?.required && (!form.controls.lastName.valid && !form.controls.lastName.pristine)}">
+                <input type="text" class="form-control" placeholder="Last Name" name="lastName" ngModel required #lastName="ngModel">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span *ngIf="lastName?.errors?.required && (!form.controls.lastName.valid && !form.controls.lastName.pristine)" class="help-block">This field is required</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': email?.errors?.required && (!form.controls.email.valid && !form.controls.email.pristine)}">
+                <input type="email" class="form-control" placeholder="Email" name="email" ngModel required #email="ngModel">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <span *ngIf="email?.errors?.required && (!form.controls.email.valid && !form.controls.email.pristine)" class="help-block">This field is required</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': (password?.errors?.required || password?.errors?.minlength) && (!form.controls.password.valid && !form.controls.password.pristine)}">
+                <input type="password" class="form-control" placeholder="Password" name="password" ngModel required #password="ngModel" minlength="6">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <span *ngIf="password?.errors?.required && (!form.controls.password.valid && !form.controls.password.pristine)" class="help-block">This field is required</span>
+                <span *ngIf="password?.errors?.minlength && (!form.controls.password.valid && !form.controls.password.pristine)" class="help-block">Password must be at least 6 characters.</span>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="{'has-error': (password?.errors?.required || confirmPassword?.errors?.equalTo || confirmPassword?.errors?.minlength) && (!form.controls.confirmPassword.valid && !form.controls.confirmPassword.pristine)}">
+                <input type="password" class="form-control" placeholder="Confirm Password" name="confirmPassword" ngModel required #confirmPassword="ngModel" [equalTo]="password" minlength="6">
+                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                <span *ngIf="password?.errors?.required && (!form.controls.confirmPassword.valid && !form.controls.confirmPassword.pristine)" class="help-block">This field is required</span>
+                <span *ngIf="confirmPassword?.errors?.equalTo && (!form.controls.confirmPassword.valid && !form.controls.confirmPassword.pristine)" class="help-block">Password and Confirm Password must be same.</span>
+                <span *ngIf="confirmPassword?.errors?.minlength && (!form.controls.confirmPassword.valid && !form.controls.confirmPassword.pristine)" class="help-block">Password must be at least 6 characters.</span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+						<input type="checkbox"> I agree to the <a href="#">terms</a>
+						</label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat" [disabled]="!form.valid">Register</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <!--<div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
+			Facebook</a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
+			Google+</a>
+        </div>-->
+        <a [routerLink]="['/login']" class="text-center">I already have a membership</a>
+    </div>
+    <!-- /.form-box -->
+</div>
