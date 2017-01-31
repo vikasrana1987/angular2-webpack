@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { ApiService } from './shared';
-import { AuthenticationService } from './_services/index';
+import { AuthenticationService, LoaderService } from './_services/index';
 
 import '../style/app.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,12 +15,20 @@ import '../public/css/skins/_all-skins.min.css';
   templateUrl: './app.component.html',
   styleUrls: [
       './app.component.scss',
-    ],
+  ],
+  providers: [LoaderService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title: string;
-  constructor(private api: ApiService, private auth: AuthenticationService) {
+  private isLoader: boolean;
+  constructor(private api: ApiService, private auth: AuthenticationService, private loaderService: LoaderService) {
     this.title = this.api.title;
     this.auth = this.auth;
+    this.isLoader = true;
+  }
+  ngOnInit() {
+      this.loaderService.loaderStatus.subscribe((_v: boolean) => {
+          this.isLoader = _v;
+      });
   }
 }

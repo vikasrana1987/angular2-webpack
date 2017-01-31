@@ -2,3 +2,13 @@
 :host {
     display: block;
 }
+
+.main-loader {
+    background: rgba(0, 0, 0, 0.6) url(../img/main-loader-img.gif) no-repeat center center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+}

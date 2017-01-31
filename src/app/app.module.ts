@@ -20,7 +20,7 @@ import { UsersComponent } from './users/users.component';
 import { ApiService } from './shared';
 
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, UserService } from './_services/index';
+import { StorageService, AlertService, AuthenticationService, UserService } from './_services/index';
 
 import { routing } from './app.routing';
 
@@ -57,6 +57,7 @@ const metaConfig: MetaConfig = {
   providers: [
     ApiService,
     AuthGuard,
+    StorageService,
     AlertService,
     AuthenticationService,
     UserService

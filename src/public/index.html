@@ -10,12 +10,55 @@
     <meta name="og:image" content="http://example.com/fallback-image.png">
     <title>Angular 2 App | ng2-webpack</title>
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
-
+    <style type="text/css">
+        body {
+            background: #0147A7;
+            color: #fff;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            background-color: #c3c3c3;
+            margin: 100px auto;
+            -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+            animation: sk-rotateplane 1.2s infinite ease-in-out;
+        }
+        
+        @-webkit-keyframes sk-rotateplane {
+            0% {
+                -webkit-transform: perspective(120px)
+            }
+            50% {
+                -webkit-transform: perspective(120px) rotateY(180deg)
+            }
+            100% {
+                -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg)
+            }
+        }
+        
+        @keyframes sk-rotateplane {
+            0% {
+                transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+                -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+            }
+            50% {
+                transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+                -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+            }
+            100% {
+                transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+                -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+            }
+        }
+    </style>
     <base href="/">
 </head>
 
 <body class="hold-transition">
-    <my-app>Loading...</my-app>
+    <my-app>
+        <div class="spinner"></div>
+    </my-app>
 </body>
 
 </html>

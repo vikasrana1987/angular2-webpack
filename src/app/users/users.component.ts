@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { User } from '../_models/index';
-import { AlertService,  UserService } from '../_services/index';
+import { AlertService,  UserService, LoaderService } from '../_services/index';
 
 declare var $: any;
 @Component({
@@ -15,8 +15,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   currentUser: User;
   users: User[] = [];
 
-  constructor(private alertService: AlertService, private userService: UserService) {
+  constructor(private alertService: AlertService, private userService: UserService, private loaderService: LoaderService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.loaderService.displayLoader(true);
   }
 
   ngOnInit() {
@@ -30,9 +31,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userService.getAll()
         .subscribe(
             data => {
+                this.loaderService.displayLoader(false);
                 console.log(data);
             },
             error => {
+                this.loaderService.displayLoader(false);
                 this.alertService.error(error);
             });
   }
