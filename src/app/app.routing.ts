@@ -9,7 +9,7 @@ import { AuthGuard } from './_guards/index';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     component: HomeComponent,
     data: {
       meta: {

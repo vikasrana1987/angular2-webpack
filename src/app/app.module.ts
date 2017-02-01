@@ -1,28 +1,35 @@
+// Angular Imports
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// 3rd Party Imports
+import { PaginationModule } from 'ng2-bootstrap';
 import { CustomFormsModule } from 'ng2-validation';
 import { MetaModule, MetaConfig } from 'ng2-meta';
+import { Ng2TableModule } from 'ng2-table/ng2-table';
+
+// Project App Imports
 
 import { AppComponent } from './app.component';
-import { AlertComponent } from './alert/index';
+import { routing } from './app.routing';
 
+// Project Component/Module Imports
+import { AlertComponent } from './alert/index';
 import { HeaderComponent } from './common/header/header.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
-
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
 
+// Project Service Imports
 import { ApiService } from './shared';
-
 import { AuthGuard } from './_guards/index';
 import { StorageService, AlertService, AuthenticationService, UserService } from './_services/index';
 
-import { routing } from './app.routing';
+
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 const metaConfig: MetaConfig = {
@@ -40,7 +47,8 @@ const metaConfig: MetaConfig = {
     HttpModule,
     FormsModule,
     CustomFormsModule,
-    NgbModule.forRoot(),
+    Ng2TableModule,
+    PaginationModule.forRoot(),
     MetaModule.forRoot(metaConfig),
     routing
   ],

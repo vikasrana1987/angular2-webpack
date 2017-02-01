@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
 
 import { User } from '../_models/user';
 
@@ -7,8 +9,17 @@ import { User } from '../_models/user';
 export class UserService {
     constructor(private http: Http) { }
 
-    getAll() {
-        return this.http.get('http://localhost:8090/api/users', this.jwt()).map((response: Response) => response.json());
+    getAll(): Observable<User[]>  {
+        return this.http.get('http://localhost:8090/api/users', this.jwt())
+        .map((response: Response) => {
+            let users = response.json();
+            return users;
+        })
+        .catch(e => {
+            if (e.status === 401) {
+                return Observable.throw('Unauthorized');
+            }
+        });
     }
 
     getById(id: number) {

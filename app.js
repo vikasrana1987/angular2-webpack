@@ -50,11 +50,11 @@ app.use(function (req, res, next) {
 			// verifies secret and checks exp
 			jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
 				if (err) {
-					return res.json({ 
+					return res.status(401).send({ 
 						'success': false,
 						'error-message':'Unclassified Authentication Failure',
 						'error-auxiliary':'Access token is invalid. Please try with new Access token'
-					});   
+					});
 				} else {
 					// if everything is good, save to request for use in other routes
 					req.decoded = decoded;    
@@ -77,57 +77,12 @@ app.use(function (req, res, next) {
 		next();
 	}
 });
-// ROUTES FOR OUR API
-// =============================================================================
 var router = express.Router();              // get an instance of the express Router
-
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
-});
-
-router.post('/authenticate', function(req, res) {
-	var user = {id:1,username:'vikas'};
-    if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
-    } else if (user) {
-
-		// check if password matches
-		if (user.password != req.body.password) {
-			res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-		} else {
-			var user = {id:1,username:req.body.username,password:req.body.password};
-			// if user is found and password is right
-			// create a token
-			var token = jwt.sign(user, app.get('superSecret'), {
-			  expiresIn: 1440 // expires in 24 hours
-			});
-			
-			// return the information including token as JSON
-			res.json({
-				success: true,
-				message: 'Enjoy your token!',
-				token: token
-			});
-		}   
-
-    }
-});
-
-router.get('/users', function(req, res) {
-	
-	return res.status(200).send(JSON.stringify([
-		{id:Math.random(),firstName:'Vikas',lastName:'Rane'},
-		{id:Math.random(),firstName:'Test',lastName:'user'}
-	]));
-});
-// more routes for our API will happen here
-
-// REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
+require('./server/routes/index')(app,router,jwt);
 
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Express server listening on port ' + port);
