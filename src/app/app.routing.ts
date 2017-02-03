@@ -50,7 +50,7 @@ const routes: Routes = [
       }
     }
   },
-  { path: '**', redirectTo: ''}
+  { path: '**', redirectTo: 'dashboard'}
 ];
 
 export const routing = RouterModule.forRoot(routes);
