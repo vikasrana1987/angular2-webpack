@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { User } from '../_models/index';
-
+let headers = new Headers({ 'Content-Type': 'application/json' });
+let options = new RequestOptions({ headers: headers });
 @Injectable()
 export class AuthenticationService {
     constructor(private http: Http) { }
 
     login(username: string, password: string): Observable<User[]> {
-        return this.http.post('http://localhost:8090/api/authenticate', JSON.stringify({ username: username, password: password }))
+        return this.http.post('http://localhost:8090/api/authenticate', JSON.stringify({ username: username, password: password }), options)
             .map(this.loginResponse)
             .catch(this.handleError);
     }
@@ -44,8 +45,8 @@ export class AuthenticationService {
         try {
             if (error instanceof Response) {
                 const body = error.json() || '';
-                const err = body.error || JSON.stringify(body);
-                errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+                const err = body.error || body;
+                errMsg = err;
             } else {
                 errMsg = error.message ? error.message : error.toString();
             }

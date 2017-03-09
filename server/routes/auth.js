@@ -1,87 +1,51 @@
-exports.authenticate = function(app,jwt){
-    return function(req, res) {	
-		var user = {id:1,username:'vikas'};
-		if (!user) {
-		  res.json({ success: false, message: 'Authentication failed. User not found.' });
-		} else if (user) {
+var models = require('./../models');
+var passwordHash = require('password-hash');
 
-			// check if password matches
-			if (user.password != req.body.password) {
-				res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-			} else {
-				var user = {id:1,username:req.body.username,password:req.body.password};
-				// if user is found and password is right
-				// create a token
-				var token = jwt.sign(user, app.get('superSecret'), {
-				  expiresIn: 1440 // expires in 24 hours
-				});
-				
-				// return the information including token as JSON
-				res.json({
-					success: true,
-					message: 'Enjoy your token!',
-					token: token
-				});
-			}   
+exports.authenticate = function(app, jwt) {
+    return function(req, res) {
+        models.User.findOne({ where: { email: req.body.username } }).then(function(user) {
+            if (!user) {
+                res.status(401).json({
+                    success: false,
+                    message: 'Authentication failed. Wrong password.'
+                });
+            } else if (user) {
+                // check if password matches
+                if (passwordHash.verify(req.body.password, user.password)) {
+                    var userObj = {
+                        id: user.id,
+                        username: user.username,
+                        password: user.password
+                    };
+                    // if user is found and password is right
+                    // create a token
+                    var token = jwt.sign(userObj, app.get('superSecret'), {
+                        expiresIn: 1440 // expires in 24 hours
+                    });
 
-		}
-	}
+                    // return the information including token as JSON
+                    res.json({
+                        success: true,
+                        message: 'You are logged in successfully.',
+                        token: token
+                    });
+                } else {
+                    res.status(401).json({
+                        success: false,
+                        message: 'Authentication failed. Wrong password.'
+                    });
+                }
+
+            }
+        });
+    }
 }
 
 exports.users = function(req, res, next) {
-	return res.status(200).send(JSON.stringify([
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-		{id: Math.floor(Math.random()*89999+10000),firstName:'Test',lastName:'user '+ Math.floor(Math.random()*89999+10000)},
-	]));
+    // find multiple entries
+    models.User.findAll({
+
+    }).then(function(users) {
+        return res.status(200).send(JSON.stringify(users));
+    });
 }
