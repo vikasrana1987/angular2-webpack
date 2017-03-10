@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
+import { UsersEditComponent } from './users/users-edit.component';
 
 import { AuthGuard } from './_guards/index';
 
@@ -30,6 +31,7 @@ const routes: Routes = [
     },
     canActivate: [AuthGuard]
   },
+  { path: 'users/edit/:id', component: UsersEditComponent },
   {
     path: 'login',
     component: LoginComponent,

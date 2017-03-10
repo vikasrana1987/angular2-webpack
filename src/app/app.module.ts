@@ -3,12 +3,12 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // 3rd Party Imports
-import { PaginationModule } from 'ng2-bootstrap';
 import { CustomFormsModule } from 'ng2-validation';
 import { MetaModule, MetaConfig } from 'ng2-meta';
-import { Ng2TableModule } from 'ng2-table/ng2-table';
+import { DataTableModule } from 'angular2-datatable';
 
 // Project App Imports
 
@@ -23,6 +23,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
+import { UsersEditComponent } from './users/users-edit.component';
 
 // Project Service Imports
 import { ApiService } from './shared';
@@ -47,8 +48,8 @@ const metaConfig: MetaConfig = {
     HttpModule,
     FormsModule,
     CustomFormsModule,
-    Ng2TableModule,
-    PaginationModule.forRoot(),
+    ReactiveFormsModule,
+    DataTableModule,
     MetaModule.forRoot(metaConfig),
     routing
   ],
@@ -60,7 +61,8 @@ const metaConfig: MetaConfig = {
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    UsersComponent
+    UsersComponent,
+    UsersEditComponent
   ],
   providers: [
     ApiService,

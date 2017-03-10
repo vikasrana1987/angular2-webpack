@@ -22,8 +22,17 @@ export class UserService {
         });
     }
 
-    getById(id: number) {
-        return this.http.get('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
+    getUserById(id: number): Observable<User[]>  {
+        return this.http.get('http://localhost:8090/api/users/' + id, this.jwt())
+        .map((response: Response) => {
+            let user = response.json();
+            return user;
+        })
+        .catch(e => {
+            if (e.status === 401) {
+                return Observable.throw('Unauthorized');
+            }
+        });
     }
 
     create(user: User) {

@@ -20,7 +20,7 @@ exports.authenticate = function(app, jwt) {
                     // if user is found and password is right
                     // create a token
                     var token = jwt.sign(userObj, app.get('superSecret'), {
-                        expiresIn: 1440 // expires in 24 hours
+                        expiresIn: 1440
                     });
 
                     // return the information including token as JSON
@@ -41,11 +41,28 @@ exports.authenticate = function(app, jwt) {
     }
 }
 
-exports.users = function(req, res, next) {
-    // find multiple entries
+// find all users
+exports.getUsers = function(req, res, next) {
     models.User.findAll({
-
+        attributes: ['id', 'firstName', 'lastName', 'email']
     }).then(function(users) {
         return res.status(200).send(JSON.stringify(users));
+    });
+}
+
+// find user by id
+exports.getUserById = function(req, res, next) {
+    var userId = req.params.id;
+    models.User.findById(userId, {
+        attributes: ['id', 'firstName', 'lastName', 'email']
+    }).then(function(user) {
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: 'User not found.'
+            });
+        } else {
+            return res.status(200).send(JSON.stringify(user));
+        }
     });
 }
