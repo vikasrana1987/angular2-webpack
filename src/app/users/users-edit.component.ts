@@ -41,7 +41,8 @@ export class UsersEditComponent implements OnInit, OnDestroy {
   loading = false;
   userData: any;
   currentUser: User;
-
+  submitted: boolean;
+  private sub: any;
   // tslint:disable-next-line:max-line-length
   constructor(private alertService: AlertService,
     private userService: UserService,
@@ -50,19 +51,22 @@ export class UsersEditComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {
+    this.submitted = false;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.loaderService.displayLoader(true);
 
     this.user = this.formBuilder.group({
       'firstName': ['', Validators.required],
-      'lastName': ['', Validators.required]
+      'lastName': ['', Validators.required],
+      'username': ['', Validators.required],
+      'email': ['', Validators.required],
     });
   }
 
   ngOnInit() {
     $('body').addClass(this.bodyClasses);
     // subscribe to router event
-    this.activatedRoute.params.subscribe((params: Params) => {
+    this.sub = this.activatedRoute.params.subscribe((params: Params) => {
       let userId = params['id'];
       this.getUserById(userId);
     });
@@ -71,6 +75,7 @@ export class UsersEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     $('body').removeClass(this.bodyClasses);
+    this.sub.unsubscribe();
   }
 
   getUserById(userId) {
@@ -82,6 +87,8 @@ export class UsersEditComponent implements OnInit, OnDestroy {
           this.user.patchValue({
             firstName: this.userData.firstName,
             lastName: this.userData.lastName,
+            username: this.userData.username,
+            email: this.userData.email
           });
         },
         error => {
@@ -93,10 +100,11 @@ export class UsersEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  onSubmit(): void {
-    /*if (isFormValid) {
+  onSubmit(isFormValid: boolean, user: User): void {
+    this.submitted = true;
+    if (isFormValid) {
       this.loading = true;
-      console.log(this);
-    }*/
+      console.log(user);
+    }
   }
 }
