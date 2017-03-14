@@ -24,6 +24,9 @@
     "start:hmr": "npm run server -- --hot",
     "postinstall": "npm run webdriver-update"
   },
+  "engines": {
+    "node": "6.9.4"
+  },
   "dependencies": {
     "@angular/common": "2.2.3",
     "@angular/compiler": "2.2.3",
